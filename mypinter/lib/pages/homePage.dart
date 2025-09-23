@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mypinter/pages/loginPage.dart';
+import 'package:mypinter/pages/forumPage.dart';
+import 'package:mypinter/pages/chatPage.dart';
+import 'package:mypinter/pages/pairingPage.dart';
+import 'package:mypinter/pages/mapPage.dart';
+import 'package:mypinter/pages/settingPage.dart';
 
 class HomePage extends StatelessWidget{
   const HomePage({super.key});
@@ -32,19 +37,50 @@ class HomePage extends StatelessWidget{
             ListTile(
               leading: Icon(Icons.forum),
               title: Text("論壇"),
-              //onTap: ,
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ForumPage(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.chat),
               title: Text("聊天"),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatPage(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.compare_arrows),
               title: Text("配對"),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PairingPage(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.map),
               title: Text("寵物地圖"),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MapPage(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.account_circle),//verified / verified_user
@@ -61,6 +97,14 @@ class HomePage extends StatelessWidget{
             ListTile(
               leading: Icon(Icons.settings),
               title: Text("Settings"),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingPage(),
+                  ),
+                );
+              },
             ),
           ],
         )
@@ -84,20 +128,7 @@ class HomePage extends StatelessWidget{
               height: 200,
             ),
           ],
-        )
-      // body: Center(
-      //   child: ElevatedButton(
-      //     child: Text("GO 2nd Page"),
-      //     onPressed: (){
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => LoginPage(),
-      //         ),
-      //       );
-      //     }, 
-      //   ),
-      // ),
+        ),
     );
   }
 }
