@@ -10,7 +10,6 @@ class PairingPage extends StatelessWidget{
         title: Text("Pairing"),
         //titleTextStyle: ,
         backgroundColor: Colors.white,
-        elevation: 10,
         actions: [
           IconButton(
             onPressed: (){},

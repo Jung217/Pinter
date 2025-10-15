@@ -10,7 +10,6 @@ class ChatPage extends StatelessWidget{
         title: Text("Chat"),
         //titleTextStyle: ,
         backgroundColor: Colors.white,
-        elevation: 10,
         actions: [
           IconButton(
             onPressed: (){},

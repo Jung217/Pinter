@@ -10,7 +10,6 @@ class SettingPage extends StatelessWidget{
         title: Text("Setting"),
         //titleTextStyle: ,
         backgroundColor: Colors.white,
-        elevation: 10,
         actions: [
           IconButton(
             onPressed: (){},

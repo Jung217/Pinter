@@ -10,7 +10,6 @@ class ForumPage extends StatelessWidget{
         title: Text("Froum"),
         //titleTextStyle: ,
         backgroundColor: Colors.white,
-        elevation: 10,
         actions: [
           IconButton(
             onPressed: (){},
