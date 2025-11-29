@@ -7,3 +7,6 @@
 
 ## App Views (Dark Mode)
 <img src="public/homePost_dark.png" alt="homePostDark" style="width:33%;"><img src="public/homeDrawer_dark.png" alt="homeDrawerDark" style="width:33%;"><img src="public/login_dark.png" alt="loginDark" style="width:33%;">
+
+## Other Highlights
+<img src="public/loadingFailed.png" alt="homePostDark" style="width:33%;">

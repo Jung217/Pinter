@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 14),
                       Text(
-                        "載入失敗跟你的人生一樣 :P",
+                        "載入跟你的人生一樣失敗 :P",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: text,
