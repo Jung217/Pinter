@@ -1,3 +1,4 @@
+import 'dart:async' show TimeoutException;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -22,14 +23,24 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<dynamic>> fetchPosts() async {
     const url = "http://123.192.96.63:8000/api/posts/?format=json";
-    final response = await http.get(Uri.parse(url));
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception("Failed to load posts");
+    try {
+      final response = await http
+          .get(Uri.parse(url))
+          .timeout(const Duration(seconds: 5)); // 超過 5 秒就超時
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception("Server Error");
+      }
+    } on TimeoutException {
+      throw Exception("Request Timeout");
+    } catch (e) {
+      throw Exception("Network Error");
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,19 +101,59 @@ class _HomePageState extends State<HomePage> {
         future: fetchPosts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(color: primary));
           }
           if (snapshot.hasError) {
-            return Center(
-              child: Text("載入失敗", style: TextStyle(color: text)),
+            final dogGif = "https://media.tenor.com/sdwtJhSDETgAAAAM/sad-dog.gif";
+            return SafeArea(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          dogGif,
+                          height: 180,
+                          width: 180,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      Text(
+                        "載入失敗跟你的人生一樣 :P",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: text,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton.icon(
+                        onPressed: () => setState(() {}),
+                        icon: const Icon(Icons.refresh),
+                        label: const Text("再試一次"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primary,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             );
           }
-
           final posts = snapshot.data!;
 
           return RefreshIndicator(
             onRefresh: () async {
-              setState(() {}); // ⚡ 重新觸發 FutureBuilder
+              setState(() {}); 
             },
             child: ListView.builder(
               padding: const EdgeInsets.all(16),
