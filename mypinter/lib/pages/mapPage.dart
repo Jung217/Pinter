@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mypinter/config/constants.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -71,7 +72,7 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Map"),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         actions: [
           IconButton(
             onPressed: _getCurrentLocation,
@@ -82,14 +83,14 @@ class _MapPageState extends State<MapPage> {
       body: FlutterMap(
         mapController: _mapController,
         options: MapOptions(
-          initialCenter: const LatLng(25.01372, 121.54086), // deafult NTUST
-          initialZoom: 13,
+          initialCenter: AppConstants.defaultMapCenter,
+          initialZoom: AppConstants.defaultMapZoom,
         ),
         children: [
           TileLayer(
-            urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            urlTemplate: AppConstants.mapUrlTemplate,
             subdomains: const ['a', 'b', 'c'],
-            userAgentPackageName: 'com.mypinter.app',
+            userAgentPackageName: AppConstants.mapPackageName,
             retinaMode: RetinaMode.isHighDensity(context),
           ),
 

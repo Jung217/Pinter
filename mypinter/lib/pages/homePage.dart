@@ -10,6 +10,7 @@ import 'package:mypinter/pages/pairingPage.dart';
 import 'package:mypinter/pages/mapPage.dart';
 import 'package:mypinter/pages/settingPage.dart';
 import 'package:mypinter/pages/postPage.dart';
+import 'package:mypinter/config/constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,10 +20,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isDark = false;
 
   Future<List<dynamic>> fetchPosts() async {
-    const url = "http://123.192.96.63:8000/api/posts/?format=json";
+    const url = AppConstants.apiUrl;
 
     try {
       final response = await http
@@ -44,56 +44,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const Color primary = Color(0xFFFF4500);
-    const Color backgroundLight = Color(0xFFF0F0F0);
-    const Color backgroundDark = Color(0xFF1A1A1A);
-    const Color cardLight = Colors.white;
-    const Color cardDark = Color(0xFF2C2C2C);
-    const Color textLight = Color(0xFF1F2937);
-    const Color textDark = Color(0xFFF3F4F6);
-    const Color subtleLight = Color(0xFF6B7280);
-    const Color subtleDark = Color(0xFF9CA3AF);
-
-    final Color bg = isDark ? backgroundDark : backgroundLight;
-    final Color card = isDark ? cardDark : cardLight;
-    final Color text = isDark ? textDark : textLight;
-    final Color subtle = isDark ? subtleDark : subtleLight;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: bg,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text("Pinter", style: TextStyle(color: text, fontWeight: FontWeight.bold)),
-        backgroundColor: card,
-        iconTheme: IconThemeData(color: text),
+        title: const Text("Pinter", style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: theme.appBarTheme.backgroundColor,
+        iconTheme: theme.appBarTheme.iconTheme,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.search, color: text)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_none, color: text)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none)),
         ],
       ),
       drawer: Drawer(
-        backgroundColor: card,
+        backgroundColor: colorScheme.surface,
         child: Column(
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: card),
-              child: Icon(Icons.apps, size: 64, color: text),
+              decoration: BoxDecoration(color: colorScheme.surface),
+              child: Icon(Icons.apps, size: 64, color: colorScheme.onSurface),
             ),
-            _drawerItem(icon: Icons.forum, text: "論壇", textColor: text, page: ForumPage()),
-            _drawerItem(icon: Icons.chat, text: "聊天", textColor: text, page: ChatPage()),
-            _drawerItem(icon: Icons.compare_arrows, text: "配對", textColor: text, page: PairingPage()),
-            _drawerItem(icon: Icons.map, text: "寵物地圖", textColor: text, page: MapPage()),
-            _drawerItem(icon: Icons.account_circle, text: "帳號", textColor: text, page: LoginPage()),
-            _drawerItem(icon: Icons.settings, text: "設定", textColor: text, page: SettingPage()),
+            _drawerItem(icon: Icons.forum, text: "論壇", page: const ForumPage()),
+            _drawerItem(icon: Icons.chat, text: "聊天", page: const ChatPage()),
+            _drawerItem(icon: Icons.compare_arrows, text: "配對", page: const PairingPage()),
+            _drawerItem(icon: Icons.map, text: "寵物地圖", page: const MapPage()),
+            _drawerItem(icon: Icons.account_circle, text: "帳號", page: const LoginPage()),
+            _drawerItem(icon: Icons.settings, text: "設定", page: const SettingPage()),
             const Spacer(),
-            Container(
-              color: card,
-              child: SwitchListTile(
-                value: isDark,
-                onChanged: (v) => setState(() => isDark = v),
-                activeColor: primary,
-                title: Text('Dark Mode', style: TextStyle(color: text)),
-              ),
-            ),
+            // Dark Mode switch removed as it is now system controlled
           ],
         ),
       ),
@@ -101,10 +81,9 @@ class _HomePageState extends State<HomePage> {
         future: fetchPosts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: primary));
+            return Center(child: CircularProgressIndicator(color: colorScheme.primary));
           }
           if (snapshot.hasError) {
-            final dogGif = "https://media.tenor.com/sdwtJhSDETgAAAAM/sad-dog.gif";
             return SafeArea(
               child: Center(
                 child: SingleChildScrollView(
@@ -114,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.network(
-                          dogGif,
+                          AppConstants.sadDogs,
                           height: 180,
                           width: 180,
                           fit: BoxFit.cover,
@@ -125,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                         "載入跟你的人生一樣失敗 :P",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: text,
+                          color: colorScheme.onSurface,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -136,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                         icon: const Icon(Icons.refresh),
                         label: const Text("再試一次"),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: primary,
+                          backgroundColor: colorScheme.primary,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -162,8 +141,8 @@ class _HomePageState extends State<HomePage> {
                 final post = posts[index];
 
                 return Card(
-                  color: card,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  color: theme.cardTheme.color,
+                  shape: theme.cardTheme.shape,
                   margin: const EdgeInsets.only(bottom: 16),
                   elevation: 4,
                   child: Padding(
@@ -172,20 +151,20 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(post['title'] ?? "",
-                            style: TextStyle(color: text, fontWeight: FontWeight.bold, fontSize: 18)),
+                            style: theme.textTheme.titleLarge?.copyWith(fontSize: 18)),
                         const SizedBox(height: 8),
                         Text(post['content'] ?? "",
-                            style: TextStyle(color: text, fontSize: 16)),
+                            style: theme.textTheme.bodyMedium?.copyWith(fontSize: 16)),
                         const SizedBox(height: 8),
                         Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: subtle,
+                              backgroundColor: colorScheme.secondary,
                               child: const Icon(Icons.person, size: 16, color: Colors.white),
                             ),
                             const SizedBox(width: 8),
                             Text(post['author'] ?? "",
-                                style: TextStyle(color: subtle, fontSize: 13)),
+                                style: TextStyle(color: colorScheme.secondary, fontSize: 13)),
                           ],
                         ),
                       ],
@@ -198,8 +177,8 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: primary,
-        child: Icon(Icons.add, color: bg),
+        backgroundColor: colorScheme.primary,
+        child: Icon(Icons.add, color: colorScheme.onPrimary),
         onPressed: () {
           Navigator.push(
             context,
@@ -213,12 +192,11 @@ class _HomePageState extends State<HomePage> {
   Widget _drawerItem({
     required IconData icon,
     required String text,
-    required Color textColor,
     required Widget page,
   }) {
     return ListTile(
-      leading: Icon(icon, color: textColor),
-      title: Text(text, style: TextStyle(color: textColor)),
+      leading: Icon(icon, color: Theme.of(context).iconTheme.color),
+      title: Text(text, style: Theme.of(context).textTheme.bodyLarge),
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => page)),
     );
   }

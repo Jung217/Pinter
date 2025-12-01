@@ -11,10 +11,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  bool isDark = false;
-  bool obscurePassword = true; // ✅ 密碼顯示切換
+  bool obscurePassword = true;
 
-  // 驗證 Email
   bool _isValidEmail(String email) {
     final RegExp regex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
     return regex.hasMatch(email);
@@ -38,7 +36,6 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    // 成功輸入
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('登入成功\nEmail: $email\nPassword: $password')),
     );
@@ -46,27 +43,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // 自訂顏色
-    const Color primary = Color(0xFFFF4500);
-    const Color backgroundLight = Color(0xFFF0F0F0);
-    const Color backgroundDark = Color(0xFF1A1A1A);
-    const Color cardLight = Colors.white;
-    const Color cardDark = Color(0xFF2C2C2C);
-    const Color textLight = Color(0xFF1F2937);
-    const Color textDark = Color(0xFFF3F4F6);
-    const Color subtleLight = Color(0xFF6B7280);
-    const Color subtleDark = Color(0xFF9CA3AF);
-    const Color borderLight = Color(0xFFE5E7EB);
-    const Color borderDark = Color(0xFF4B5563);
-
-    final Color bg = isDark ? backgroundDark : backgroundLight;
-    final Color card = isDark ? cardDark : cardLight;
-    final Color text = isDark ? textDark : textLight;
-    final Color subtle = isDark ? subtleDark : subtleLight;
-    final Color border = isDark ? borderDark : borderLight;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: bg,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -85,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.5,
-                    color: text,
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -94,19 +74,19 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
-                  style: TextStyle(color: text),
+                  style: TextStyle(color: colorScheme.onSurface),
                   decoration: InputDecoration(
                     hintText: 'Email',
-                    hintStyle: TextStyle(color: subtle),
+                    hintStyle: TextStyle(color: colorScheme.secondary),
                     filled: true,
-                    fillColor: card,
+                    fillColor: theme.cardTheme.color,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: border),
+                      borderSide: BorderSide(color: colorScheme.outline),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: primary),
+                      borderSide: BorderSide(color: colorScheme.primary),
                     ),
                   ),
                 ),
@@ -116,18 +96,18 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   controller: passwordController,
                   obscureText: obscurePassword,
-                  style: TextStyle(color: text),
+                  style: TextStyle(color: colorScheme.onSurface),
                   decoration: InputDecoration(
                     hintText: 'Password',
-                    hintStyle: TextStyle(color: subtle),
+                    hintStyle: TextStyle(color: colorScheme.secondary),
                     filled: true,
-                    fillColor: card,
+                    fillColor: theme.cardTheme.color,
                     suffixIcon: IconButton(
                       icon: Icon(
                         obscurePassword
                             ? Icons.visibility_off
                             : Icons.visibility,
-                        color: subtle,
+                        color: colorScheme.secondary,
                       ),
                       onPressed: () => setState(() {
                         obscurePassword = !obscurePassword;
@@ -135,11 +115,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: border),
+                      borderSide: BorderSide(color: colorScheme.outline),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: primary),
+                      borderSide: BorderSide(color: colorScheme.primary),
                     ),
                   ),
                 ),
@@ -150,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextButton(
                     onPressed: () {},
                     child: Text('Forgot Password?',
-                        style: TextStyle(color: subtle, fontSize: 14)),
+                        style: TextStyle(color: colorScheme.secondary, fontSize: 14)),
                   ),
                 ),
 
@@ -159,8 +139,8 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: card,
-                      foregroundColor: text,
+                      backgroundColor: theme.cardTheme.color,
+                      foregroundColor: colorScheme.onSurface,
                       elevation: 3,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
@@ -179,13 +159,13 @@ class _LoginPageState extends State<LoginPage> {
                 // Divider
                 Row(
                   children: [
-                    Expanded(child: Divider(color: border)),
+                    Expanded(child: Divider(color: colorScheme.outline)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Text('Or sign in with',
-                          style: TextStyle(color: subtle, fontSize: 14)),
+                          style: TextStyle(color: colorScheme.secondary, fontSize: 14)),
                     ),
-                    Expanded(child: Divider(color: border)),
+                    Expanded(child: Divider(color: colorScheme.outline)),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -194,10 +174,10 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _socialButton(card, border,
-                        icon: Icons.apple, iconColor: text, onTap: () {}),
+                    _socialButton(theme.cardTheme.color!, colorScheme.outline,
+                        icon: Icons.apple, iconColor: colorScheme.onSurface, onTap: () {}),
                     const SizedBox(width: 16),
-                    _socialButton(card, border,
+                    _socialButton(theme.cardTheme.color!, colorScheme.outline,
                         assetGoogle: true, onTap: () {}),
                   ],
                 ),
@@ -206,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                 // Register
                 RichText(
                   text: TextSpan(
-                    style: TextStyle(color: subtle, fontSize: 14),
+                    style: TextStyle(color: colorScheme.secondary, fontSize: 14),
                     children: [
                       const TextSpan(text: "Don't have an account? "),
                       WidgetSpan(
@@ -215,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             'Register now',
                             style: TextStyle(
-                              color: text,
+                              color: colorScheme.onSurface,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -228,12 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 40),
 
                 // Toggle Dark/Light
-                // SwitchListTile(
-                //   value: isDark,
-                //   onChanged: (v) => setState(() => isDark = v),
-                //   activeColor: primary,
-                //   title: Text('Dark Mode', style: TextStyle(color: text)),
-                // )
+                // Toggle Dark/Light removed as it is system controlled
               ],
             ),
           ),
