@@ -17,8 +17,9 @@
 ### Chat
 <img src="public/chat.png" alt="chat" style="width:50%;"><img src="public/chat_dark.png" alt="chatDark" style="width:50%;">
 <img src="public/chatroom.png" alt="chatroom" style="width:50%;"><img src="public/chatroom_dark.png" alt="chatroomDark" style="width:50%;">
-<img src="public/chatfn.png" alt="chatfn" style="width:33%;"><img src="public/chatfn_dark.png" alt="chatfnDark" style="width:33%;"><img src="public/chatchoose.png" alt="chatchoose" style="width:33%;">
-<img src="public/chatchoose_dark.png" alt="chatchooseDark" style="width:33%;"><img src="public/chatset.png" alt="chatset" style="width:33%;"><img src="public/chatset_dark.png" alt="chatsetDark" style="width:33%;">
+<img src="public/chatfn.png" alt="chatfn" style="width:50%;"><img src="public/chatfn_dark.png" alt="chatfnDark" style="width:50%;">
+<img src="public/chatchoose.png" alt="chatchoose" style="width:50%;"><img src="public/chatchoose_dark.png" alt="chatchooseDark" style="width:50%;">
+<img src="public/chatset.png" alt="chatset" style="width:50%;"><img src="public/chatset_dark.png" alt="chatsetDark" style="width:50%;">
 
 ### Login / Regiser
 <img src="public/login.png" alt="login" style="width:50%;"><img src="public/login_dark.png" alt="loginDark" style="width:50%;">
