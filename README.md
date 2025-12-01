@@ -27,5 +27,5 @@
 ### Setting
 <img src="public/setting.png" alt="seeting" style="width:50%;"><img src="public/setting_dark.png" alt="seetingDark" style="width:50%;">
 
-## Error Post
+### Error Post
 <img src="public/error.png" alt="error" style="width:50%;"><img src="public/error_dark.png" alt="errorDark" style="width:50%;">
