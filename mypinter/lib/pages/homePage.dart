@@ -11,6 +11,9 @@ import 'package:mypinter/pages/mapPage.dart';
 import 'package:mypinter/pages/settingPage.dart';
 import 'package:mypinter/pages/postPage.dart';
 import 'package:mypinter/config/constants.dart';
+import 'package:mypinter/config/l10n.dart';
+import 'package:provider/provider.dart';
+import 'package:mypinter/config/app_settings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,10 +47,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    return Consumer<AppSettings>(
+      builder: (context, settings, child) {
+        final theme = Theme.of(context);
+        final colorScheme = theme.colorScheme;
 
-    return Scaffold(
+        return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: const Text("Pinter", style: TextStyle(fontWeight: FontWeight.bold)),
@@ -66,12 +71,12 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(color: colorScheme.surface),
               child: Icon(Icons.apps, size: 64, color: colorScheme.onSurface),
             ),
-            _drawerItem(icon: Icons.forum, text: "論壇", page: const ForumPage()),
-            _drawerItem(icon: Icons.chat, text: "聊天", page: const ChatPage()),
-            _drawerItem(icon: Icons.compare_arrows, text: "配對", page: const PairingPage()),
-            _drawerItem(icon: Icons.map, text: "寵物地圖", page: const MapPage()),
-            _drawerItem(icon: Icons.account_circle, text: "帳號", page: const LoginPage()),
-            _drawerItem(icon: Icons.settings, text: "設定", page: const SettingPage()),
+            _drawerItem(icon: Icons.forum, text: L10n.of(context, 'forum'), page: const ForumPage()),
+            _drawerItem(icon: Icons.chat, text: L10n.of(context, 'chat'), page: const ChatPage()),
+            _drawerItem(icon: Icons.compare_arrows, text: L10n.of(context, 'pairing'), page: const PairingPage()),
+            _drawerItem(icon: Icons.map, text: L10n.of(context, 'map'), page: const MapPage()),
+            _drawerItem(icon: Icons.account_circle, text: L10n.of(context, 'account'), page: const LoginPage()),
+            _drawerItem(icon: Icons.settings, text: L10n.of(context, 'settings'), page: const SettingPage()),
             const Spacer(),
             // Dark Mode switch removed as it is now system controlled
           ],
@@ -101,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 14),
                       Text(
-                        "載入跟你的人生一樣失敗 :P",
+                        L10n.of(context, 'loadingFailed'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: colorScheme.onSurface,
@@ -113,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                       ElevatedButton.icon(
                         onPressed: () => setState(() {}),
                         icon: const Icon(Icons.refresh),
-                        label: const Text("再試一次"),
+                        label: Text(L10n.of(context, 'retry')),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: colorScheme.primary,
                           foregroundColor: Colors.white,
@@ -186,6 +191,8 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
+        );
+      },
     );
   }
 

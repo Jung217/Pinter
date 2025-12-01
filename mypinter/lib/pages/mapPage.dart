@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mypinter/config/constants.dart';
+import 'package:mypinter/config/l10n.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -71,7 +72,7 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Map"),
+        title: Text(L10n.of(context, 'map')),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         actions: [
           IconButton(

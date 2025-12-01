@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypinter/config/l10n.dart';
 
 class ForumPage extends StatelessWidget {
   const ForumPage({super.key});
@@ -6,16 +7,16 @@ class ForumPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> topics = [
-      {"title": "General Discussion", "icon": Icons.chat, "color": Colors.blue},
-      {"title": "Health & Nutrition", "icon": Icons.local_hospital, "color": Colors.red},
-      {"title": "Training & Behavior", "icon": Icons.pets, "color": Colors.orange},
-      {"title": "Adoption & Rescue", "icon": Icons.favorite, "color": Colors.pink},
-      {"title": "Events & Meetups", "icon": Icons.event, "color": Colors.green},
+      {"title": L10n.of(context, 'generalDiscussion'), "icon": Icons.chat, "color": Colors.blue},
+      {"title": L10n.of(context, 'healthNutrition'), "icon": Icons.local_hospital, "color": Colors.red},
+      {"title": L10n.of(context, 'trainingBehavior'), "icon": Icons.pets, "color": Colors.orange},
+      {"title": L10n.of(context, 'adoptionRescue'), "icon": Icons.favorite, "color": Colors.pink},
+      {"title": L10n.of(context, 'eventsMeetups'), "icon": Icons.event, "color": Colors.green},
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Forum"),
+        title: Text(L10n.of(context, 'forum')),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         elevation: 1,

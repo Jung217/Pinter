@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypinter/pages/chatRoomPage.dart';
+import 'package:mypinter/config/l10n.dart';
 
 class NewGroupPage extends StatefulWidget {
   final List<String> selectedContacts;
@@ -22,7 +23,7 @@ class _NewGroupPageState extends State<NewGroupPage> {
   void _createGroup() {
     if (_groupNameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a group name')),
+        SnackBar(content: Text(L10n.of(context, 'pleaseEnterGroupName'))),
       );
       return;
     }
@@ -56,7 +57,7 @@ class _NewGroupPageState extends State<NewGroupPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Group', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(L10n.of(context, 'newGroup'), style: const TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: theme.appBarTheme.backgroundColor,
         foregroundColor: theme.appBarTheme.foregroundColor,
         elevation: 0,
@@ -110,7 +111,7 @@ class _NewGroupPageState extends State<NewGroupPage> {
                     child: TextField(
                       controller: _groupNameController,
                       decoration: InputDecoration(
-                        hintText: 'Group name',
+                        hintText: L10n.of(context, 'groupName'),
                         hintStyle: TextStyle(color: colorScheme.secondary),
                         filled: true,
                         fillColor: theme.cardTheme.color,
@@ -138,7 +139,7 @@ class _NewGroupPageState extends State<NewGroupPage> {
                     child: Row(
                       children: [
                         Text(
-                          'Participants: ${widget.selectedContacts.length}',
+                          '${L10n.of(context, 'participants')}：${widget.selectedContacts.length} 位',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: colorScheme.onSurface,
@@ -207,9 +208,9 @@ class _NewGroupPageState extends State<NewGroupPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
-                    'Create Group',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  child: Text(
+                    L10n.of(context, 'createGroup'),
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
               ),

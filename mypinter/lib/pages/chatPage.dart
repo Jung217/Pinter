@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mypinter/pages/chatRoomPage.dart';
 import 'package:mypinter/pages/selectContactsPage.dart';
+import 'package:mypinter/config/l10n.dart';
+import 'package:provider/provider.dart';
+import 'package:mypinter/config/app_settings.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
@@ -13,32 +16,32 @@ class ChatPage extends StatelessWidget {
     final List<Map<String, dynamic>> chats = [
       {
         "name": "Alice",
-        "message": "Hey! How is your dog doing?",
-        "time": "10:30 AM",
+        "message": "嘿！你的狗狗最近怎麼樣？",
+        "time": "上午 10:30",
         "avatar": "https://i.pravatar.cc/150?u=alice",
         "unread": 2,
         "isOnline": true,
       },
       {
         "name": "Bob",
-        "message": "Can we meet at the park tomorrow?",
-        "time": "09:15 AM",
+        "message": "明天可以在公園見面嗎？",
+        "time": "上午 09:15",
         "avatar": "https://i.pravatar.cc/150?u=bob",
         "unread": 0,
         "isOnline": false,
       },
       {
         "name": "Charlie",
-        "message": "Thanks for the tips!",
-        "time": "Yesterday",
+        "message": "謝謝你的建議！",
+        "time": "昨天",
         "avatar": "https://i.pravatar.cc/150?u=charlie",
         "unread": 0,
         "isOnline": true,
       },
       {
         "name": "Diana",
-        "message": "See you at the vet!",
-        "time": "Yesterday",
+        "message": "獸醫那裡見！",
+        "time": "昨天",
         "avatar": "https://i.pravatar.cc/150?u=diana",
         "unread": 5,
         "isOnline": false,
@@ -47,7 +50,7 @@ class ChatPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Chat", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(L10n.of(context, 'chat'), style: const TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: theme.appBarTheme.backgroundColor,
         foregroundColor: theme.appBarTheme.foregroundColor,
         elevation: 0,
@@ -206,7 +209,7 @@ class ChatPage extends StatelessWidget {
                       backgroundColor: colorScheme.primary.withOpacity(0.1),
                       child: Icon(Icons.group_add, color: colorScheme.primary),
                     ),
-                    title: const Text('New Group', style: TextStyle(fontWeight: FontWeight.w600)),
+                    title: Text(L10n.of(context, 'newGroup'), style: const TextStyle(fontWeight: FontWeight.w600)),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -220,7 +223,7 @@ class ChatPage extends StatelessWidget {
                       backgroundColor: colorScheme.primary.withOpacity(0.1),
                       child: Icon(Icons.person_add, color: colorScheme.primary),
                     ),
-                    title: const Text('New Chat', style: TextStyle(fontWeight: FontWeight.w600)),
+                    title: Text(L10n.of(context, 'newChat'), style: const TextStyle(fontWeight: FontWeight.w600)),
                     onTap: () {
                       Navigator.pop(context);
                       // TODO: Navigate to contact selection for direct chat

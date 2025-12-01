@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypinter/config/l10n.dart';
 
 class ChatRoomPage extends StatefulWidget {
   final String contactName;
@@ -24,27 +25,27 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   final TextEditingController _messageController = TextEditingController();
   final List<Map<String, dynamic>> _messages = [
     {
-      "text": "Hey! How is your dog doing?",
+      "text": "嘿！你的狗狗最近怎麼樣？",
       "isSender": false,
-      "time": "10:25 AM",
+      "time": "上午 10:25",
       "senderName": "Alice",
     },
     {
-      "text": "He's doing great! Just took him to the park.",
+      "text": "他很好！剛帶他去公園。",
       "isSender": true,
-      "time": "10:26 AM",
+      "time": "上午 10:26",
       "senderName": "You",
     },
     {
-      "text": "That's awesome! Mine loves the park too.",
+      "text": "太棒了！我的狗也很喜歡公園。",
       "isSender": false,
-      "time": "10:27 AM",
+      "time": "上午 10:27",
       "senderName": "Bob",
     },
     {
-      "text": "We should arrange a playdate sometime!",
+      "text": "我們應該安排一次狗狗聚會！",
       "isSender": true,
-      "time": "10:28 AM",
+      "time": "上午 10:28",
       "senderName": "You",
     },
   ];
@@ -56,7 +57,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       _messages.add({
         "text": _messageController.text,
         "isSender": true,
-        "time": "Now",
+        "time": "現在",
         "senderName": "You",
       });
     });
@@ -115,7 +116,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                   ),
                   if (widget.isOnline && !widget.isGroup)
                     Text(
-                      'Online',
+                      L10n.of(context, 'online'),
                       style: TextStyle(
                         fontSize: 12,
                         color: colorScheme.secondary,
@@ -123,7 +124,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                     ),
                   if (widget.isGroup && widget.groupMembers != null)
                     Text(
-                      '${widget.groupMembers!.length} members',
+                      '${widget.groupMembers!.length} ${L10n.of(context, 'members')}',
                       style: TextStyle(
                         fontSize: 12,
                         color: colorScheme.secondary,
@@ -193,7 +194,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 4),
                             child: Text(
-                              message['senderName'] ?? 'Unknown',
+                              message['senderName'] ?? L10n.of(context, 'unknown'),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -251,7 +252,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                     child: TextField(
                       controller: _messageController,
                       decoration: InputDecoration(
-                        hintText: 'Type a message...',
+                        hintText: L10n.of(context, 'typeMessage'),
                         hintStyle: TextStyle(color: colorScheme.secondary),
                         filled: true,
                         fillColor: theme.scaffoldBackgroundColor,

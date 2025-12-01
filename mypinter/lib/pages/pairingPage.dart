@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypinter/config/l10n.dart';
 
 class PairingPage extends StatelessWidget {
   const PairingPage({super.key});
@@ -16,7 +17,7 @@ class PairingPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pairing"),
+        title: Text(L10n.of(context, 'pairing')),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         elevation: 1,

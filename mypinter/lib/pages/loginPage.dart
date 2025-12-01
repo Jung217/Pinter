@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypinter/pages/registerPage.dart';
+import 'package:mypinter/config/l10n.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -77,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                   keyboardType: TextInputType.emailAddress,
                   style: TextStyle(color: colorScheme.onSurface),
                   decoration: InputDecoration(
-                    hintText: 'Email',
+                    hintText: L10n.of(context, 'email'),
                     hintStyle: TextStyle(color: colorScheme.secondary),
                     filled: true,
                     fillColor: theme.cardTheme.color,
@@ -99,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: obscurePassword,
                   style: TextStyle(color: colorScheme.onSurface),
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    hintText: L10n.of(context, 'password'),
                     hintStyle: TextStyle(color: colorScheme.secondary),
                     filled: true,
                     fillColor: theme.cardTheme.color,
@@ -130,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {},
-                    child: Text('Forgot Password?',
+                    child: Text(L10n.of(context, 'forgotPassword'),
                         style: TextStyle(color: colorScheme.secondary, fontSize: 14)),
                   ),
                 ),
@@ -149,9 +150,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     onPressed: _loginAction, // ✅ 驗證與 SnackBar
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    child: Text(
+                      L10n.of(context, 'login'),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -163,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                     Expanded(child: Divider(color: colorScheme.outline)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text('Or sign in with',
+                      child: Text(L10n.of(context, 'orSignInWith'),
                           style: TextStyle(color: colorScheme.secondary, fontSize: 14)),
                     ),
                     Expanded(child: Divider(color: colorScheme.outline)),
@@ -189,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                   text: TextSpan(
                     style: TextStyle(color: colorScheme.secondary, fontSize: 14),
                     children: [
-                      const TextSpan(text: "Don't have an account? "),
+                      TextSpan(text: "${L10n.of(context, 'dontHaveAccount')} "),
                       WidgetSpan(
                         child: GestureDetector(
                           onTap: () {
@@ -199,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           },
                           child: Text(
-                            'Register now',
+                            L10n.of(context, 'registerNow'),
                             style: TextStyle(
                               color: colorScheme.onSurface,
                               fontWeight: FontWeight.bold,

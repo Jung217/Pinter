@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypinter/pages/loginPage.dart';
+import 'package:mypinter/config/l10n.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -77,7 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'Create your account',
+                  L10n.of(context, 'createAccount'),
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
@@ -92,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.emailAddress,
                   style: TextStyle(color: colorScheme.onSurface),
                   decoration: InputDecoration(
-                    hintText: 'Email',
+                    hintText: L10n.of(context, 'email'),
                     hintStyle: TextStyle(color: colorScheme.secondary),
                     filled: true,
                     fillColor: theme.cardTheme.color,
@@ -114,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: obscurePassword,
                   style: TextStyle(color: colorScheme.onSurface),
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    hintText: L10n.of(context, 'password'),
                     hintStyle: TextStyle(color: colorScheme.secondary),
                     filled: true,
                     fillColor: theme.cardTheme.color,
@@ -147,7 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: obscureConfirmPassword,
                   style: TextStyle(color: colorScheme.onSurface),
                   decoration: InputDecoration(
-                    hintText: 'Confirm Password',
+                    hintText: L10n.of(context, 'confirmPassword'),
                     hintStyle: TextStyle(color: colorScheme.secondary),
                     filled: true,
                     fillColor: theme.cardTheme.color,
@@ -188,9 +189,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     onPressed: _registerAction,
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    child: Text(
+                      L10n.of(context, 'register'),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -202,7 +203,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Expanded(child: Divider(color: colorScheme.outline)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text('Or sign up with',
+                      child: Text(L10n.of(context, 'orSignUpWith'),
                           style: TextStyle(color: colorScheme.secondary, fontSize: 14)),
                     ),
                     Expanded(child: Divider(color: colorScheme.outline)),
@@ -228,14 +229,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   text: TextSpan(
                     style: TextStyle(color: colorScheme.secondary, fontSize: 14),
                     children: [
-                      const TextSpan(text: "Already have an account? "),
+                      TextSpan(text: "${L10n.of(context, 'alreadyHaveAccount')} "),
                       WidgetSpan(
                         child: GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
                           },
                           child: Text(
-                            'Login',
+                            L10n.of(context, 'login'),
                             style: TextStyle(
                               color: colorScheme.onSurface,
                               fontWeight: FontWeight.bold,

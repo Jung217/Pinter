@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypinter/pages/newGroupPage.dart';
+import 'package:mypinter/config/l10n.dart';
 
 class SelectContactsPage extends StatefulWidget {
   const SelectContactsPage({super.key});
@@ -40,10 +41,10 @@ class _SelectContactsPageState extends State<SelectContactsPage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('New Group', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            Text(L10n.of(context, 'newGroup'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             if (_selectedContacts.isNotEmpty)
               Text(
-                '${_selectedContacts.length} selected',
+                '${L10n.of(context, 'selected')} ${_selectedContacts.length} 位',
                 style: TextStyle(fontSize: 12, color: colorScheme.secondary),
               ),
           ],
@@ -68,7 +69,7 @@ class _SelectContactsPageState extends State<SelectContactsPage> {
                 );
               },
               child: Text(
-                'Next',
+                L10n.of(context, 'next'),
                 style: TextStyle(
                   color: colorScheme.primary,
                   fontWeight: FontWeight.bold,
@@ -87,7 +88,7 @@ class _SelectContactsPageState extends State<SelectContactsPage> {
             child: TextField(
               onChanged: (value) => setState(() => _searchQuery = value),
               decoration: InputDecoration(
-                hintText: 'Search contacts...',
+                hintText: L10n.of(context, 'searchContacts'),
                 hintStyle: TextStyle(color: colorScheme.secondary),
                 prefixIcon: Icon(Icons.search, color: colorScheme.secondary),
                 filled: true,
@@ -155,7 +156,7 @@ class _SelectContactsPageState extends State<SelectContactsPage> {
                     ),
                   ),
                   subtitle: Text(
-                    isOnline ? 'Online' : 'Offline',
+                    isOnline ? L10n.of(context, 'online') : L10n.of(context, 'offline'),
                     style: TextStyle(
                       fontSize: 12,
                       color: colorScheme.secondary,
