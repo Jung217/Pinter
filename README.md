@@ -1,5 +1,5 @@
 # Pinter 
-![image](public/Logos/app_logo.png)
+<img src="public/homePost.png" alt="homePost" style="width:50%;">
 
 ### A real pet dating app
 ![image](public/fistDemo.png)
