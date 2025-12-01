@@ -1,33 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:mypinter/pages/registerPage.dart';
+import 'package:mypinter/pages/loginPage.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
 
   bool _isValidEmail(String email) {
     final RegExp regex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
     return regex.hasMatch(email);
   }
 
-  void _loginAction() {
+  void _registerAction() {
     final email = emailController.text.trim();
     final password = passwordController.text;
+    final confirmPassword = confirmPasswordController.text;
 
     String? error;
     if (!_isValidEmail(email)) {
       error = '請輸入有效的 Email 格式';
     } else if (password.length < 6) {
       error = '密碼至少需 6 個字元';
+    } else if (password != confirmPassword) {
+      error = '密碼不一致';
     }
 
     if (error != null) {
@@ -37,8 +42,9 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
+    // 成功註冊
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('登入成功\nEmail: $email\nPassword: $password')),
+      SnackBar(content: Text('註冊成功\nEmail: $email')),
     );
   }
 
@@ -57,19 +63,28 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Image.asset(
                   'assets/app_logo.png',
-                  width: 100,
+                  width: 70,
                 ),
                 const SizedBox(height: 12),
                 Text(
                   'PINTER',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.5,
                     color: colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 24),
+                Text(
+                  'Create your account',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 48),
 
                 // Email
                 TextField(
@@ -124,18 +139,42 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 20),
 
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text('Forgot Password?',
-                        style: TextStyle(color: colorScheme.secondary, fontSize: 14)),
+                // Confirm Password
+                TextField(
+                  controller: confirmPasswordController,
+                  obscureText: obscureConfirmPassword,
+                  style: TextStyle(color: colorScheme.onSurface),
+                  decoration: InputDecoration(
+                    hintText: 'Confirm Password',
+                    hintStyle: TextStyle(color: colorScheme.secondary),
+                    filled: true,
+                    fillColor: theme.cardTheme.color,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obscureConfirmPassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: colorScheme.secondary,
+                      ),
+                      onPressed: () => setState(() {
+                        obscureConfirmPassword = !obscureConfirmPassword;
+                      }),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: colorScheme.outline),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: colorScheme.primary),
+                    ),
                   ),
                 ),
+                const SizedBox(height: 28),
 
-                // Login Button
+                // Register Button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -148,9 +187,9 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: _loginAction, // ✅ 驗證與 SnackBar
+                    onPressed: _registerAction,
                     child: const Text(
-                      'Login',
+                      'Register',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -163,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                     Expanded(child: Divider(color: colorScheme.outline)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text('Or sign in with',
+                      child: Text('Or sign up with',
                           style: TextStyle(color: colorScheme.secondary, fontSize: 14)),
                     ),
                     Expanded(child: Divider(color: colorScheme.outline)),
@@ -184,22 +223,19 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 32),
 
-                // Register
+                // Login Link
                 RichText(
                   text: TextSpan(
                     style: TextStyle(color: colorScheme.secondary, fontSize: 14),
                     children: [
-                      const TextSpan(text: "Don't have an account? "),
+                      const TextSpan(text: "Already have an account? "),
                       WidgetSpan(
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const RegisterPage()),
-                            );
+                            Navigator.pop(context);
                           },
                           child: Text(
-                            'Register now',
+                            'Login',
                             style: TextStyle(
                               color: colorScheme.onSurface,
                               fontWeight: FontWeight.bold,
@@ -210,11 +246,6 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-
-                const SizedBox(height: 40),
-
-                // Toggle Dark/Light
-                // Toggle Dark/Light removed as it is system controlled
               ],
             ),
           ),
@@ -243,7 +274,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: assetGoogle
               ? Image.asset(
-                  'assets/google_logo.png', // 確保 pubspec.yaml 有正確宣告
+                  'assets/google_logo.png',
                   width: 19,
                 )
               : Icon(icon, color: iconColor, size: 28),
