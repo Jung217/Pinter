@@ -92,6 +92,27 @@ class AppStrings {
       case 'loadingFailed': return isZh ? '載入跟你的人生一樣失敗 :P' : 'Loading failed like your life :P';
       case 'retry': return isZh ? '再試一次' : 'Retry';
       
+      // Dog Registration
+      case 'dogRegistration': return isZh ? '寵物登記' : 'Dog Registration';
+      case 'dogName': return isZh ? '寵物名稱' : 'Dog Name';
+      case 'gender': return isZh ? '性別' : 'Gender';
+      case 'male': return isZh ? '公' : 'Male';
+      case 'female': return isZh ? '母' : 'Female';
+      case 'chipId': return isZh ? '晶片號碼' : 'Chip ID';
+      case 'photo': return isZh ? '照片' : 'Photo';
+      case 'city': return isZh ? '城市' : 'City';
+      case 'masterLastname': return isZh ? '主人姓氏' : "Master's Lastname";
+      case 'selectPhoto': return isZh ? '選擇照片' : 'Select Photo';
+      case 'submit': return isZh ? '提交' : 'Submit';
+      case 'cancel': return isZh ? '取消' : 'Cancel';
+      case 'optional': return isZh ? '選填' : 'Optional';
+      case 'pleaseEnterDogName': return isZh ? '請輸入寵物名稱' : 'Please enter dog name';
+      case 'pleaseSelectGender': return isZh ? '請選擇性別' : 'Please select gender';
+      case 'pleaseEnterCity': return isZh ? '請輸入城市' : 'Please enter city';
+      case 'pleaseEnterLastname': return isZh ? '請輸入主人姓氏' : "Please enter master's lastname";
+      case 'registrationSuccess': return isZh ? '登記成功！' : 'Registration successful!';
+      case 'myDogs': return isZh ? '我的寵物' : 'My Dogs';
+      
       default: return key;
     }
   }

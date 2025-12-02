@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:mypinter/pages/homePage.dart';
 import 'package:mypinter/config/theme.dart';
 import 'package:mypinter/config/app_settings.dart';
+import 'package:mypinter/config/auth_state.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => AppSettings(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AppSettings()),
+        ChangeNotifierProvider(create: (_) => AuthState()),
+      ],
       child: const MyApp(),
     ),
   );

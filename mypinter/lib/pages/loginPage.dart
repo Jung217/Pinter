@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mypinter/pages/registerPage.dart';
 import 'package:mypinter/config/l10n.dart';
+import 'package:provider/provider.dart';
+import 'package:mypinter/config/auth_state.dart';
+import 'package:mypinter/pages/accountPage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,37 +15,141 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   bool obscurePassword = true;
+  bool isLoading = false;
 
   bool _isValidEmail(String email) {
     final RegExp regex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
     return regex.hasMatch(email);
   }
 
-  void _loginAction() {
-    final email = emailController.text.trim();
+  Future<void> _loginAction() async {
+    final username = usernameController.text.trim();
     final password = passwordController.text;
 
-    String? error;
-    if (!_isValidEmail(email)) {
-      error = '請輸入有效的 Email 格式';
-    } else if (password.length < 6) {
-      error = '密碼至少需 6 個字元';
-    }
-
-    if (error != null) {
+    // Validation
+    if (username.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error)),
+        const SnackBar(content: Text('請輸入使用者名稱')),
       );
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('登入成功\nEmail: $email\nPassword: $password')),
-    );
+    if (password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('請輸入密碼')),
+      );
+      return;
+    }
+
+    // Show loading
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      // Call login API
+      final response = await http.post(
+        Uri.parse('http://123.192.96.63:8000/api/auth/login/'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'username': username,
+          'password': password,
+        }),
+      );
+
+      setState(() {
+        isLoading = false;
+      });
+
+      if (response.statusCode == 200) {
+        // Success - parse tokens
+        final data = jsonDecode(response.body);
+        final accessToken = data['access'];
+        final refreshToken = data['refresh'];
+
+        // Fetch user info using access token
+        final userResponse = await http.get(
+          Uri.parse('http://123.192.96.63:8000/api/auth/user/'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken',
+          },
+        );
+
+        if (userResponse.statusCode == 200) {
+          final userData = jsonDecode(userResponse.body);
+          
+          // Set auth state with user info and tokens
+          final authState = Provider.of<AuthState>(context, listen: false);
+          authState.login(
+            username: userData['username'] ?? username,
+            email: userData['email'] ?? '',
+            token: accessToken,
+          );
+
+          if (!mounted) return;
+          
+          // Navigate to AccountPage
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const AccountPage()),
+          );
+        } else {
+          // Failed to fetch user info, but login was successful
+          final authState = Provider.of<AuthState>(context, listen: false);
+          authState.login(
+            username: username,
+            email: '',
+            token: accessToken,
+          );
+
+          if (!mounted) return;
+          
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const AccountPage()),
+          );
+        }
+      } else {
+        // Login failed
+        final data = jsonDecode(response.body);
+        String errorMessage = '登入失敗';
+        
+        if (data is Map) {
+          if (data.containsKey('detail')) {
+            errorMessage = data['detail'];
+          } else if (data.containsKey('error')) {
+            errorMessage = data['error'];
+          } else {
+            errorMessage = data.values.join('\n');
+          }
+        }
+
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('網路錯誤: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -72,13 +181,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 32),
 
-                // Email
+                // Username
                 TextField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
+                  controller: usernameController,
                   style: TextStyle(color: colorScheme.onSurface),
                   decoration: InputDecoration(
-                    hintText: L10n.of(context, 'email'),
+                    hintText: '使用者名稱',
                     hintStyle: TextStyle(color: colorScheme.secondary),
                     filled: true,
                     fillColor: theme.cardTheme.color,
@@ -149,11 +257,20 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: _loginAction, // ✅ 驗證與 SnackBar
-                    child: Text(
-                      L10n.of(context, 'login'),
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    onPressed: isLoading ? null : _loginAction,
+                    child: isLoading
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.onSurface),
+                            ),
+                          )
+                        : Text(
+                            L10n.of(context, 'login'),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                   ),
                 ),
                 const SizedBox(height: 28),

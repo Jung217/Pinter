@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mypinter/pages/loginPage.dart';
 import 'package:mypinter/config/l10n.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -11,42 +13,130 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
 
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
+  bool isLoading = false;
 
   bool _isValidEmail(String email) {
     final RegExp regex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
     return regex.hasMatch(email);
   }
 
-  void _registerAction() {
+  Future<void> _registerAction() async {
+    final username = usernameController.text.trim();
     final email = emailController.text.trim();
     final password = passwordController.text;
     final confirmPassword = confirmPasswordController.text;
 
-    String? error;
-    if (!_isValidEmail(email)) {
-      error = '請輸入有效的 Email 格式';
-    } else if (password.length < 6) {
-      error = '密碼至少需 6 個字元';
-    } else if (password != confirmPassword) {
-      error = '密碼不一致';
-    }
-
-    if (error != null) {
+    // Validation
+    if (username.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error)),
+        const SnackBar(content: Text('請輸入使用者名稱')),
       );
       return;
     }
 
-    // 成功註冊
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('註冊成功\nEmail: $email')),
-    );
+    if (!_isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('請輸入有效的 Email 格式')),
+      );
+      return;
+    }
+
+    if (password.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('密碼至少需 8 個字元')),
+      );
+      return;
+    }
+
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('密碼不一致')),
+      );
+      return;
+    }
+
+    // Show loading
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://123.192.96.63:8000/api/auth/register/'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'username': username,
+          'email': email,
+          'password': password,
+          'password2': confirmPassword,
+        }),
+      );
+
+      setState(() {
+        isLoading = false;
+      });
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Success
+        final data = jsonDecode(response.body);
+        if (!mounted) return;
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(data['message'] ?? '註冊成功！'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // Navigate to login page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
+      } else {
+        // Error
+        final data = jsonDecode(response.body);
+        String errorMessage = '註冊失敗';
+        
+        if (data is Map) {
+          // Extract error messages
+          if (data.containsKey('message')) {
+            errorMessage = data['message'];
+          } else if (data.containsKey('error')) {
+            errorMessage = data['error'];
+          } else {
+            // Combine all error messages
+            errorMessage = data.values.join('\n');
+          }
+        }
+
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('網路錯誤: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -86,6 +176,27 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 48),
+
+                // Username
+                TextField(
+                  controller: usernameController,
+                  style: TextStyle(color: colorScheme.onSurface),
+                  decoration: InputDecoration(
+                    hintText: '使用者名稱',
+                    hintStyle: TextStyle(color: colorScheme.secondary),
+                    filled: true,
+                    fillColor: theme.cardTheme.color,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: colorScheme.outline),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: colorScheme.primary),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
 
                 // Email
                 TextField(
@@ -188,11 +299,20 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: _registerAction,
-                    child: Text(
-                      L10n.of(context, 'register'),
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    onPressed: isLoading ? null : _registerAction,
+                    child: isLoading
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.onSurface),
+                            ),
+                          )
+                        : Text(
+                            L10n.of(context, 'register'),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                   ),
                 ),
                 const SizedBox(height: 28),

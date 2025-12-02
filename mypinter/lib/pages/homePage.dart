@@ -14,6 +14,8 @@ import 'package:mypinter/config/constants.dart';
 import 'package:mypinter/config/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:mypinter/config/app_settings.dart';
+import 'package:mypinter/pages/accountPage.dart';
+import 'package:mypinter/config/auth_state.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -75,7 +77,13 @@ class _HomePageState extends State<HomePage> {
             _drawerItem(icon: Icons.chat, text: L10n.of(context, 'chat'), page: const ChatPage()),
             _drawerItem(icon: Icons.compare_arrows, text: L10n.of(context, 'pairing'), page: const PairingPage()),
             _drawerItem(icon: Icons.map, text: L10n.of(context, 'map'), page: const MapPage()),
-            _drawerItem(icon: Icons.account_circle, text: L10n.of(context, 'account'), page: const LoginPage()),
+            _drawerItem(
+              icon: Icons.account_circle,
+              text: L10n.of(context, 'account'),
+              page: Provider.of<AuthState>(context, listen: false).isLoggedIn
+                  ? const AccountPage()
+                  : const LoginPage(),
+            ),
             _drawerItem(icon: Icons.settings, text: L10n.of(context, 'settings'), page: const SettingPage()),
             const Spacer(),
             // Dark Mode switch removed as it is now system controlled
@@ -204,7 +212,13 @@ class _HomePageState extends State<HomePage> {
     return ListTile(
       leading: Icon(icon, color: Theme.of(context).iconTheme.color),
       title: Text(text, style: Theme.of(context).textTheme.bodyLarge),
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => page)),
+      onTap: () {
+        Navigator.pop(context); // Close drawer
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
+      },
     );
   }
 }
