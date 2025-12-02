@@ -89,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
             username: userData['username'] ?? username,
             email: userData['email'] ?? '',
             token: accessToken,
+            refreshToken: refreshToken,
           );
 
           if (!mounted) return;

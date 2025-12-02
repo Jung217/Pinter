@@ -65,30 +65,32 @@ class _HomePageState extends State<HomePage> {
           IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none)),
         ],
       ),
-      drawer: Drawer(
-        backgroundColor: colorScheme.surface,
-        child: Column(
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: colorScheme.surface),
-              child: Icon(Icons.apps, size: 64, color: colorScheme.onSurface),
+      drawer: Consumer<AuthState>(
+        builder: (context, authState, child) {
+          return Drawer(
+            backgroundColor: colorScheme.surface,
+            child: Column(
+              children: [
+                DrawerHeader(
+                  decoration: BoxDecoration(color: colorScheme.surface),
+                  child: Icon(Icons.apps, size: 64, color: colorScheme.onSurface),
+                ),
+                _drawerItem(icon: Icons.forum, text: L10n.of(context, 'forum'), page: const ForumPage()),
+                _drawerItem(icon: Icons.chat, text: L10n.of(context, 'chat'), page: const ChatPage()),
+                _drawerItem(icon: Icons.compare_arrows, text: L10n.of(context, 'pairing'), page: const PairingPage()),
+                _drawerItem(icon: Icons.map, text: L10n.of(context, 'map'), page: const MapPage()),
+                _drawerItem(
+                  icon: Icons.account_circle,
+                  text: L10n.of(context, 'account'),
+                  page: authState.isLoggedIn ? const AccountPage() : const LoginPage(),
+                ),
+                _drawerItem(icon: Icons.settings, text: L10n.of(context, 'settings'), page: const SettingPage()),
+                const Spacer(),
+                // Dark Mode switch removed as it is now system controlled
+              ],
             ),
-            _drawerItem(icon: Icons.forum, text: L10n.of(context, 'forum'), page: const ForumPage()),
-            _drawerItem(icon: Icons.chat, text: L10n.of(context, 'chat'), page: const ChatPage()),
-            _drawerItem(icon: Icons.compare_arrows, text: L10n.of(context, 'pairing'), page: const PairingPage()),
-            _drawerItem(icon: Icons.map, text: L10n.of(context, 'map'), page: const MapPage()),
-            _drawerItem(
-              icon: Icons.account_circle,
-              text: L10n.of(context, 'account'),
-              page: Provider.of<AuthState>(context, listen: false).isLoggedIn
-                  ? const AccountPage()
-                  : const LoginPage(),
-            ),
-            _drawerItem(icon: Icons.settings, text: L10n.of(context, 'settings'), page: const SettingPage()),
-            const Spacer(),
-            // Dark Mode switch removed as it is now system controlled
-          ],
-        ),
+          );
+        },
       ),
       body: FutureBuilder<List<dynamic>>(
         future: fetchPosts(),

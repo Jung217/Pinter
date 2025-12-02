@@ -6,6 +6,7 @@ import 'package:mypinter/config/auth_state.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MultiProvider(
       providers: [
@@ -17,8 +18,22 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Load auth state after widget is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AuthState>(context, listen: false).loadAuthState();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
