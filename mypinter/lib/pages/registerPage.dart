@@ -3,6 +3,7 @@ import 'package:mypinter/pages/loginPage.dart';
 import 'package:mypinter/config/l10n.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:mypinter/config/constants.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -35,28 +36,28 @@ class _RegisterPageState extends State<RegisterPage> {
     // Validation
     if (username.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('請輸入使用者名稱')),
+        SnackBar(content: Text(L10n.of(context, 'pleaseEnterUsername'))),
       );
       return;
     }
 
     if (!_isValidEmail(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('請輸入有效的 Email 格式')),
+        SnackBar(content: Text(L10n.of(context, 'pleaseEnterValidEmail'))),
       );
       return;
     }
 
     if (password.length < 8) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('密碼至少需 8 個字元')),
+        SnackBar(content: Text(L10n.of(context, 'passwordMinLength'))),
       );
       return;
     }
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('密碼不一致')),
+        SnackBar(content: Text(L10n.of(context, 'passwordMismatch'))),
       );
       return;
     }
@@ -68,7 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://123.192.96.63:8000/api/auth/register/'),
+        Uri.parse(AppConstants.apiRegisterUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'username': username,
@@ -102,7 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
       } else {
         // Error
         final data = jsonDecode(response.body);
-        String errorMessage = '註冊失敗';
+        String errorMessage = L10n.of(context, 'registerFailed');
         
         if (data is Map) {
           // Extract error messages
@@ -132,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('網路錯誤: $e'),
+          content: Text('${L10n.of(context, 'networkError')}: $e'),
           backgroundColor: Colors.red,
         ),
       );

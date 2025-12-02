@@ -117,6 +117,25 @@ class AppStrings {
       case 'changePassword': return isZh ? '更改密碼' : 'Change Password';
       case 'notifications': return isZh ? '通知' : 'Notifications';
       
+      // Validation Messages
+      case 'pleaseEnterUsername': return isZh ? '請輸入使用者名稱' : 'Please enter username';
+      case 'pleaseEnterPassword': return isZh ? '請輸入密碼' : 'Please enter password';
+      case 'pleaseEnterValidEmail': return isZh ? '請輸入有效的 Email 格式' : 'Please enter valid email format';
+      case 'passwordMinLength': return isZh ? '密碼至少需 8 個字元' : 'Password must be at least 8 characters';
+      case 'passwordMismatch': return isZh ? '密碼不一致' : 'Passwords do not match';
+      case 'loginFailed': return isZh ? '登入失敗' : 'Login failed';
+      case 'registerFailed': return isZh ? '註冊失敗' : 'Registration failed';
+      case 'networkError': return isZh ? '網路錯誤' : 'Network error';
+      
+      // Settings Messages
+      case 'languageSetToChinese': return isZh ? '已設定為繁體中文' : 'Language set to Traditional Chinese';
+      case 'languageSetToEnglish': return isZh ? 'Language set to English' : 'Language set to English';
+      
+      // Map Messages
+      case 'pleaseEnableLocation': return isZh ? '請開啟定位服務' : 'Please enable location services';
+      case 'locationPermissionDenied': return isZh ? '定位權限被拒絕' : 'Location permission denied';
+      case 'locationPermissionPermanentlyDenied': return isZh ? '定位權限永久拒絕' : 'Location permission permanently denied';
+      
       default: return key;
     }
   }

@@ -6,6 +6,7 @@ import 'package:mypinter/config/auth_state.dart';
 import 'package:mypinter/pages/accountPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:mypinter/config/constants.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -33,14 +34,14 @@ class _LoginPageState extends State<LoginPage> {
     // Validation
     if (username.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('請輸入使用者名稱')),
+        SnackBar(content: Text(L10n.of(context, 'pleaseEnterUsername'))),
       );
       return;
     }
 
     if (password.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('請輸入密碼')),
+        SnackBar(content: Text(L10n.of(context, 'pleaseEnterPassword'))),
       );
       return;
     }
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       // Call login API
       final response = await http.post(
-        Uri.parse('http://123.192.96.63:8000/api/auth/login/'),
+        Uri.parse(AppConstants.apiLoginUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'username': username,
@@ -73,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
 
         // Fetch user info using access token
         final userResponse = await http.get(
-          Uri.parse('http://123.192.96.63:8000/api/auth/user/'),
+          Uri.parse(AppConstants.apiUserUrl),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $accessToken',
@@ -118,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         // Login failed
         final data = jsonDecode(response.body);
-        String errorMessage = '登入失敗';
+        String errorMessage = L10n.of(context, 'loginFailed');
         
         if (data is Map) {
           if (data.containsKey('detail')) {
@@ -146,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('網路錯誤: $e'),
+          content: Text('${L10n.of(context, 'networkError')}: $e'),
           backgroundColor: Colors.red,
         ),
       );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:mypinter/config/constants.dart';
 
 class PostPage extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _PostPageState extends State<PostPage> {
   Future<void> submitPost() async {
     setState(() => isLoading = true);
 
-    final url = Uri.parse("http://123.192.96.63:8000/api/posts/create/");
+    final url = Uri.parse(AppConstants.apiPostCreateUrl);
 
     final body = {
       "title": _titleController.text,

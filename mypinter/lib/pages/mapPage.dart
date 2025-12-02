@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypinter/config/l10n.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -31,7 +32,7 @@ class _MapPageState extends State<MapPage> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('請開啟定位服務')),
+        SnackBar(content: Text(L10n.of(context, 'pleaseEnableLocation'))),
       );
       return;
     }
@@ -42,7 +43,7 @@ class _MapPageState extends State<MapPage> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('定位權限被拒絕')),
+          SnackBar(content: Text(L10n.of(context, 'locationPermissionDenied'))),
         );
         return;
       }
@@ -50,7 +51,7 @@ class _MapPageState extends State<MapPage> {
 
     if (permission == LocationPermission.deniedForever) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('定位權限永久拒絕')),
+        SnackBar(content: Text(L10n.of(context, 'locationPermissionPermanentlyDenied'))),
       );
       return;
     }

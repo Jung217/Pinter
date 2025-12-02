@@ -26,7 +26,7 @@ class SettingPage extends StatelessWidget {
                   settings.setLanguage('zh_TW');
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('已設定為繁體中文')),
+                    SnackBar(content: Text(settings.language == 'zh_TW' ? '已設定為繁體中文' : 'Language set to Traditional Chinese')),
                   );
                 },
               ),
