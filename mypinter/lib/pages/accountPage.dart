@@ -124,6 +124,95 @@ class AccountPage extends StatelessWidget {
               },
             ),
           ),
+          const SizedBox(height: 24),
+
+          // Account Settings Section
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              L10n.of(context, 'accountSettings'),
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: colorScheme.secondary,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          // Edit Profile
+          Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              leading: CircleAvatar(
+                backgroundColor: colorScheme.primary.withOpacity(0.1),
+                child: Icon(Icons.person, color: colorScheme.primary),
+              ),
+              title: Text(
+                L10n.of(context, 'editProfile'),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16, color: colorScheme.secondary),
+              onTap: () {
+                // Navigate to edit profile
+              },
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          // Change Password
+          Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              leading: CircleAvatar(
+                backgroundColor: colorScheme.primary.withOpacity(0.1),
+                child: Icon(Icons.lock, color: colorScheme.primary),
+              ),
+              title: Text(
+                L10n.of(context, 'changePassword'),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16, color: colorScheme.secondary),
+              onTap: () {
+                // Navigate to change password
+              },
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          // Notifications
+          Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              leading: CircleAvatar(
+                backgroundColor: colorScheme.primary.withOpacity(0.1),
+                child: Icon(Icons.notifications, color: colorScheme.primary),
+              ),
+              title: Text(
+                L10n.of(context, 'notifications'),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16, color: colorScheme.secondary),
+              onTap: () {
+                // Navigate to notifications settings
+              },
+            ),
+          ),
           const SizedBox(height: 32),
 
           // Logout Button

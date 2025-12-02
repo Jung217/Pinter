@@ -119,27 +119,6 @@ class SettingPage extends StatelessWidget {
           body: ListView(
             children: [
               const SizedBox(height: 16),
-              _buildSectionHeader(isZh ? "帳號" : "Account"),
-              _buildSettingItem(
-                context,
-                Icons.person,
-                isZh ? "編輯個人資料" : "Edit Profile",
-                () {},
-              ),
-              _buildSettingItem(
-                context,
-                Icons.lock,
-                isZh ? "更改密碼" : "Change Password",
-                () {},
-              ),
-              _buildSettingItem(
-                context,
-                Icons.notifications,
-                isZh ? "通知" : "Notifications",
-                () {},
-              ),
-              
-              const Divider(height: 32),
               _buildSectionHeader(isZh ? "偏好設定" : "Preferences"),
               _buildSettingItem(
                 context,
@@ -169,18 +148,6 @@ class SettingPage extends StatelessWidget {
                 Icons.info,
                 isZh ? "關於我們" : "About Us",
                 () {},
-              ),
-              
-              const Divider(height: 32),
-              ListTile(
-                leading: const Icon(Icons.logout, color: Colors.red),
-                title: Text(
-                  isZh ? "登出" : "Logout",
-                  style: const TextStyle(color: Colors.red),
-                ),
-                onTap: () {
-                  // Handle logout
-                },
               ),
             ],
           ),

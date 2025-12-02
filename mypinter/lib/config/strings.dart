@@ -112,6 +112,10 @@ class AppStrings {
       case 'pleaseEnterLastname': return isZh ? '請輸入主人姓氏' : "Please enter master's lastname";
       case 'registrationSuccess': return isZh ? '登記成功！' : 'Registration successful!';
       case 'myDogs': return isZh ? '我的寵物' : 'My Dogs';
+      case 'accountSettings': return isZh ? '帳號設定' : 'Account Settings';
+      case 'editProfile': return isZh ? '編輯個人資料' : 'Edit Profile';
+      case 'changePassword': return isZh ? '更改密碼' : 'Change Password';
+      case 'notifications': return isZh ? '通知' : 'Notifications';
       
       default: return key;
     }
